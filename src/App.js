@@ -1,6 +1,6 @@
-import React, { useState} from "react";
+import React, { useState } from "react";
 // importx
-import Login from "./components/login";
+import Practice from "./components/practice";
 import Signup from "./components/signup";
 
 export default function App() {
@@ -9,7 +9,7 @@ export default function App() {
   return (
     <div style={{ textAlign: "center" }}>
       {!isLogin ? (
-        <Login
+        <Practice
           changeLoginState={() => {
             setIsLogin((bool) => !bool);
           }}
@@ -17,6 +17,7 @@ export default function App() {
       ) : (
         <Signup
           changeLoginState={() => {
+            console.log("trigger");
             setIsLogin((bool) => !bool);
           }}
         />
@@ -24,4 +25,3 @@ export default function App() {
     </div>
   );
 }
-
