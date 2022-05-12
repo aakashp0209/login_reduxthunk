@@ -1,29 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setUserState } from "../redux/counter";
-// importx
-import axios from "axios";
+import { getPhotos, setCurrentUser } from "../redux/userdetails";
 
 function Practice({ changeLoginState }) {
-  const isLogged = useSelector((state) => state.counter.isLogged);
-  const dispatch = useDispatch();
-  const [userData, setUserData] = useState([]);
-  const [email, setEmail] = useState("");
-  // const [welcomeCard, setWelcomeCard] = useState(false);
-  const [password, setPassword] = useState("");
-  const [currentUserDetails, setCurrentUserDetails] = useState(null);
+  const userData = useSelector((state) => state.gallery.photos);
+  const currentUser = useSelector((state) => state.gallery.currentUser);
 
-  // Json
+  const dispatch = useDispatch();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   useEffect(() => {
-    axios
-      .get("./db.json")
-      .then((res) => {
-        console.log(res.data, "msg");
-        setUserData(res.data);
-      })
-      .catch((err) => console.log(err));
-  }, []);
+    dispatch(getPhotos());
+  });
 
   const loginUser = () => {
     // ! if userdata coming from is empty then no need to check return
@@ -33,14 +22,14 @@ function Practice({ changeLoginState }) {
     // console.log(filterUser, userData, "filter user");
     // ! if password
     if (filterUser[0]?.password === password) {
-      dispatch(setUserState(true));
-      setCurrentUserDetails(filterUser);
+      console.log(filterUser, "current user ");
+      dispatch(setCurrentUser(filterUser));
     }
   };
 
   return (
     <>
-      {!isLogged ? (
+      {currentUser.length === 0 ? (
         <div>
           <h1>login </h1>
           <p> Email</p>
@@ -81,19 +70,17 @@ function Practice({ changeLoginState }) {
         </div>
       ) : (
         <>
-          <h1>{`welcome ${currentUserDetails[0]?.email}`}</h1>
+          <h1>{`welcome ${currentUser[0]?.email}`}</h1>
           <button
             onClick={() => {
-              dispatch(setUserState(false));
+              dispatch(setCurrentUser([]));
             }}
           >
             Logout
           </button>
         </>
       )}
-      <p style={{ marginTop: "2rem" }}>
-        hint: email: aakash.p@gmail.com , password: hello
-      </p>
+      
     </>
   );
 }

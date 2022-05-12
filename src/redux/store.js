@@ -1,8 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
-import counterReducer from "./counter";
+import galleryReducer from "./userdetails";
 
 export default configureStore({
   reducer: {
-    counter: counterReducer
+    gallery: galleryReducer
   }
 });
